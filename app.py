@@ -10,7 +10,7 @@ import os
 
 
 app = Flask(__name__)
-#cors = CORS(app, resources={r"/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/returnid")
 def returnid():
@@ -42,7 +42,7 @@ def returnname():
         return str(name)
     else:
         return "No name found for id " + id
-@app.route("/trim1")
+@app.route("/trim1bckp")
 def trim1():
     ipmUsername = os.environ.get('ipmUsername', None)
     ipmPassword = os.environ.get('ipmPassword', None)
@@ -52,7 +52,6 @@ def trim1():
     cookie = r.cookies.get_dict()
     print(r.status_code, cookie, "pad000pre.asp" in r.text)
     if "pad000pre.asp" in str(r.content):
-        print('anashei')
         pad046 = requests.get("http://www.ipmpadres.com.ar/intranet/aspsql/pad046.asp?vTrim=1&vAluSel=" + str(aluID), cookies=cookie)
         parsed_data = lh.fromstring(pad046.content)
         tr_elements = parsed_data.xpath('//tr')
@@ -71,6 +70,10 @@ def trim1():
                 col[name.strip()] = [content.strip(), ""]
 
             json_data = json.dumps(col, ensure_ascii=False).encode('utf8')
+        backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID) + "&data=" + str(json_data))        
+        
+        print(backup.status_code)
+        print(backup.headers)
         return json_data
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
