@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html style="height: 100%; width: 100%;">
+    <head>
+
+    </head>
+
+    <body style="height: 100%; width: 100%;">
+        <script>
+            function swap(json){
+                var ret = {};
+                for(var key in json){
+                  ret[json[key]] = key;
+                }
+                console.log(ret)
+                }
+            </script>
+        <textarea type="text" name="json" style="height: 100%; width: 100%;" oninput="swap(this.value)">
+        <a></a>
+    </body>
+</html>
