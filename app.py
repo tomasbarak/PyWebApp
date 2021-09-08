@@ -19,7 +19,7 @@ def returnid():
     name = str(request.args.get('name'))
     secName = str(request.args.get('secname'))
     surname = str(request.args.get('surname'))
-    if len(secName) > 0:
+    if secName:
         contructedName = str(surname + ' ' + name)
         contructedName = contructedName.upper()
         id = jsonAlu.get(contructedName)
