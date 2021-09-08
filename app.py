@@ -72,6 +72,7 @@ def trim1():
             json_data = json.dumps(col, ensure_ascii=False).encode('utf8')
         backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID) + "&data=" + str(json_data))        
         
+        
         print(backup.status_code)
         print(backup.headers)
         return json_data
