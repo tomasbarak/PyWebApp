@@ -72,5 +72,7 @@ def trim1():
             json_data = json.dumps(col, ensure_ascii=False).encode('utf8')
         #backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID) + "&data=" + str(json_data))        
         return json_data
+    else:
+        return {"Cannot complete the request"}
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
