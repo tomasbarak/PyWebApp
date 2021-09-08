@@ -70,7 +70,7 @@ def trim1():
                 col[name.strip()] = [content.strip(), ""]
 
             json_data = json.dumps(col, ensure_ascii=False).encode('utf8')
-        backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID) + "&data=" + str(json_data))        
+        backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID, 'utf-8') + "&data=" + str(json_data, 'utf-8'))        
         return json_data
     else:
         return {"Cannot complete the request"}
