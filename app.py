@@ -76,3 +76,9 @@ def trim1():
         return {"Cannot complete the request"}
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8080, debug=True)
+
+@app.route("/getfbtrim1")
+def getFbTrim1():
+    aluID = str(request.args.get('id'))
+    getFirebaseTrim1 = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1fb?id=" + str(aluID))
+    return(getFirebaseTrim1.content)
