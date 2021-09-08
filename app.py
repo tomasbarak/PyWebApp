@@ -24,7 +24,7 @@ def returnid():
         contructedName = contructedName.upper()
         id = jsonAlu.get(contructedName)
     else:
-        contructedName = str(surname + ' ' + secName + ' ' + name)
+        contructedName = str(surname + ' ' + name + ' ' + secName)
         contructedName = contructedName.upper()
         id = jsonAlu.get(contructedName)
     if id:
