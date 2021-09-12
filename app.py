@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import abort
 import requests
 from requests.api import get
 from flask import request
@@ -30,7 +31,7 @@ def returnid():
     if id:
         return str(id)
     else:
-        return "No id found for " + contructedName 
+        abort(404)
 
 @app.route("/returnname")
 def returnname():
