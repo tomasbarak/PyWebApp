@@ -10,6 +10,8 @@ import lxml.html as lh
 import string
 import os
 
+from requests.models import Response
+
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -89,6 +91,6 @@ def getFbTrim1():
 def authorize():
     code = str(request.args.get('code'))
     if code == os.environ.get('code', None):
-        return()
+        return("authorized")
     else:
         abort(401)
