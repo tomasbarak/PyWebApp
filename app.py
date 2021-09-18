@@ -1,3 +1,4 @@
+from datetime import date, datetime, time
 from flask import Flask
 from flask import abort
 import requests
@@ -88,6 +89,6 @@ def getFbTrim1():
 def authorize():
     code = str(request.args.get('code'))
     if code == os.environ.get('code', None):
-        return("testAccessToken")
+        return()
     else:
         abort(401)
