@@ -86,11 +86,3 @@ def getFbTrim1():
     aluID = str(request.args.get('id'))
     getFirebaseTrim1 = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1fb?id=" + str(aluID))
     return(getFirebaseTrim1.content)
-
-@app.route("/auth")
-def authorize():
-    code = str(request.args.get('code'))
-    if code == os.environ.get('code', None):
-        return("authorized")
-    else:
-        abort(401)
