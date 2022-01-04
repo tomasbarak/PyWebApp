@@ -9,12 +9,26 @@ import json
 import lxml.html as lh
 import string
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 from requests.models import Response
-
+import logging
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+try:
+    import http.client as http_client
+except ImportError:
+    # Python 2
+    import httplib as http_client
+http_client.HTTPConnection.debuglevel = 1
+
+# You must initialize logging, otherwise you'll not see debug output.
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.setLevel(logging.DEBUG)
+requests_log.propagate = True
 
 @app.route("/returnid")
 def returnid():
@@ -50,14 +64,16 @@ def returnname():
 def trim1():
     ipmUsername = os.environ.get('ipmUsername', None)
     ipmPassword = os.environ.get('ipmPassword', None)
-    r=requests.post('http://www.ipmpadres.com.ar/intranet/aspsql/verifusuario_1.asp?usuario='+ ipmUsername + '&password=' + ipmPassword)
+    print(ipmUsername, ipmPassword)
+    r=requests.post('https://www.insignia.net.ar/ipmpadres/intranet/aspsql/verifusuario_1.asp?usuario='+ ipmUsername + '&password=' + ipmPassword)
     s = requests.Session()
     aluID = str(request.args.get('id'))
     cookie = r.cookies.get_dict()
-    print(r.status_code, cookie, "pad000pre.asp" in r.text)
+    print(r.status_code, cookie, "pad000pre.asp" in r.text, "Session Cookies: ", s.cookies.get_dict())
     if "pad000pre.asp" in str(r.content):
-        pad046 = requests.get("http://www.ipmpadres.com.ar/intranet/aspsql/pad046.asp?vTrim=1&vAluSel=" + str(aluID), cookies=cookie)
-        parsed_data = lh.fromstring(pad046.content)
+        print("Signed In")
+        pad046 = requests.get("https://www.insignia.net.ar/ipmpadres/intranet/aspsql/pad046.asp?vAluSel=3918&vTrim=1", cookies=cookie)
+        parsed_data = lh.fromstring(str(pad046.content))
         tr_elements = parsed_data.xpath('//tr')
         #Create empty list
         col = {}
@@ -74,6 +90,7 @@ def trim1():
                 col[name.strip()] = [content.strip(), ""]
 
             json_data = json.dumps(col, ensure_ascii=False).encode('utf8')
+        print(json_data)
         backup = requests.post("https://ipmalumnstrimbackups.herokuapp.com/trim1?id=" + str(aluID) + "&data=" + str(json_data, 'utf-8'))        
         return json_data
     else:
